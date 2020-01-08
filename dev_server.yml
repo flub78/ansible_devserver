@@ -1,0 +1,25 @@
+---
+
+- name: Installing a development server
+
+  gather_facts: true
+  hosts: flub78
+
+  become: yes
+  remote_user: frederic
+  become_method: sudo
+  become_user: root
+
+  roles:
+#    - apache
+#    - mysql
+    - ftp
+
+  pre_tasks:
+
+    - name: test connection
+      ping:
+      remote_user: frederic
+
+    - name: test root access
+      command: 'grep root /etc/shadow'

@@ -1,0 +1,40 @@
+    - name: install ftp
+      apt: name={{ item }} state=present update_cache=yes
+      with_items:
+        - proftpd
+
+    - name: create a ftp user
+      user:
+        name: "{{ftp_user}}"
+        comment: "ftp account"
+        password: "{{ftp_encrypted}}"
+
+# uncomment DefaultRoot in /etc/proftpd/proftpd.conf
+    - name:  uncomment DefaultRoot in /etc/proftpd/proftpd.conf
+      lineinfile:
+        dest: /etc/proftpd/proftpd.conf
+        regexp: '^#\s*DefaultRoot.*$'
+        line: 'DefaultRoot                   ~'
+ 
+# uncomment set passive ports
+    - name:  uncomment DefaultRoot in /etc/proftpd/proftpd.conf
+      lineinfile:
+        dest: /etc/proftpd/proftpd.conf
+        regexp: '^#\s*PassivePorts.*$'
+        line: 'PassivePorts  64000 65000'
+
+
+# adding /usr/sbin/nologin to /etc/shells
+    - name:  adding /usr/sbin/nologin to /etc/shells
+      lineinfile:
+        dest: /etc/shells
+        regexp: '\/usr\/sbin\/nologin'
+        line: '/usr/sbin/nologin'
+
+
+# sudo service proftpd reload
+    - name:  sudo service proftpd reload
+      service:
+        name: proftpd
+        state: restarted
+

@@ -1,0 +1,12 @@
+---
+
+- name: Network Getting Started First Playbook
+  gather_facts: true
+  hosts: flub78
+  remote_user: frederic
+  tasks:
+
+    - name: test connection
+      ping:
+      remote_user: frederic
+
