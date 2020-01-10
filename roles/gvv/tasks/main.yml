@@ -1,0 +1,10 @@
+#    Install GVV
+
+    - name: check that svn is installed
+      apt:
+        name: subversion
+        state: present
+
+    - name: mkdir gvv
+      debug:
+        msg: mkdir gvv

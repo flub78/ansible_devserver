@@ -1,0 +1,17 @@
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+
+    - name: install PHP 7.3
+      apt:
+        name: python-certbot-apache
+        state: present
+
+# sudo certbot --apache -d example.com -d www.example.com
+# Does not work the process is interactive
+# I need a way to supply the parameters (to be fixed later)
+#    - name: generate certificate
+#      command: certbot --apache -d flub78.ddns.net

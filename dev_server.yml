@@ -12,8 +12,11 @@
 
   roles:
 #    - apache
+#    - https
 #    - mysql
-    - ftp
+#    - ftp
+#    - php
+    - gvv
 
   pre_tasks:
 

@@ -1,0 +1,66 @@
+#    Comented out, it takes for ever ...
+#    - name: Update and upgrade apt packages
+#      become: true
+#      apt:
+#        upgrade: yes
+#        update_cache: yes
+#        cache_valid_time: 86400 #One day
+
+# Commented out, the process is interactive
+#    - name: add PHP repository
+#      command: "add-apt-repository ppa:ondrej/php"
+#      command: "add-apt-repository ppa:ondrej/apache2"
+
+    - name: install PHP 7.3
+      apt:
+        name: php7.3 
+        state: present
+
+    - name: instapp phpmyadmin
+      apt:
+        pkg:
+        - phpmyadmin
+        - php7.3-mbstring
+        - php7.3-gettext
+        - php7.3-mysql
+        - php7.3-common
+        - php7.3-cli
+        - php7.3-bcmath
+        - php7.3-bz2
+        - php7.3-curl
+        - php7.3-gd
+        - php7.3-intl
+        - php7.3-json
+        - php7.3-readline
+        - php7.3-xml
+        - php7.3-zip
+        - php7.3-fpm
+        - libapache2-mod-php7.3
+        - subversion
+        state: present
+
+    - name: phpmyadmin symbolic link
+      file:
+        src: /usr/share/phpmyadmin
+        dest: /var/www/html/phpmyadmin
+        state: link
+
+    - name: Apache enable modules
+      apache2_module:
+        state: present
+        name: proxy_fcgi
+
+    - name: Apache enable modules
+      apache2_module:
+        state: present
+        name: setenvif
+
+    - name: Apache enable modules
+      apache2_module:
+        state: present
+        name: php7.3
+
+
+    - name: start httpd
+      service: name=apache2 state=restarted
+

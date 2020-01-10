@@ -8,3 +8,15 @@
 
     - name: start httpd
       service: name=apache2 state=started
+
+      #    commented out. wget works fine ...
+      #    - name: check that the server can be reached
+      # uri:
+      #         url: "http://{{inventory_hostname}}"
+      #         follow_redirects: yes
+
+    - name:  check that the server can be reached
+      get_url:
+        url:  "http://{{inventory_hostname}}"
+        dest: /tmp/index.html
+        timeout: 30
