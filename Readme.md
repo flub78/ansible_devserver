@@ -19,3 +19,5 @@ target_domain:ansible_port ansible_become_password=password
 
 ## To run it
 ansible-playbook -i hosts --ask-vault-pass dev_server.yml
+or
+ansible-playbook -i hosts dev_server.yml

@@ -5,6 +5,86 @@
         name: subversion
         state: present
 
-    - name: mkdir gvv
-      debug:
-        msg: mkdir gvv
+    - name: get sources
+      subversion:
+        repo: '{{svn_repo}}'
+        dest: '{{installation_path}}'
+        password: '{{svn_password}}'
+        username: '{{svn_user}}'
+        force: yes
+
+    - name: set correct owner
+      file:
+         path: '{{installation_path}}'
+         mode: 0770
+         recurse: yes
+         state: directory
+         owner: www-data
+         group: www-data
+
+
+# Create a database
+    - name: create a database
+      mysql_db:
+        login_user: root
+        login_password:  "{{mysql_root_pass }}"
+        login_host: localhost
+        name: "{{db_database}}"
+        state: present
+
+# Create a databse user
+    - name: Create database user '{{db_username}}'
+      mysql_user:
+         name='{{db_username}}'
+         password='{{db_password}}'
+         priv='{{db_database}}.*:ALL'
+         state=present
+
+# update application/config/database
+    - name:  setup config/database.php
+      lineinfile:
+         dest:  '{{installation_path}}/application/config/database.php'
+         regexp: 'gvv_user'
+         line: "$db['default']['username'] = '{{db_username}}';"
+
+# update application/config/database
+    - name:  setup config/database.php
+      lineinfile:
+         dest:  '{{installation_path}}/application/config/database.php'
+         regexp: 'lfoyfgbj'
+         line: "$db['default']['password'] = '{{db_password}}';"
+
+# update application/config/database
+    - name:  setup config/database.php
+      lineinfile:
+         dest:  '{{installation_path}}/application/config/database.php'
+         regexp: 'gvv2'
+         line: "$db['default']['database'] = '{{db_database}}';"
+
+
+# set the domain name in application/config/config.php
+    - name:  setup config/config.php
+      lineinfile:
+         dest:  '{{installation_path}}/application/config/config.php'
+         regexp: 'base_url'
+         line: "$config['base_url']     = 'https://flub78.ddns.net/gvv/';"
+
+# a few configuration changes
+    - name: setup config/club.php
+      lineinfile: 
+         dest:  '{{installation_path}}/application/config/club.php'
+         regexp: 'nom_club'
+         line: "$config['nom_club'] = 'Test server {{inventory_hostname}}';"
+
+# a few configuration changes
+    - name: setup config/club.php
+      lineinfile:
+         dest:  '{{installation_path}}/application/config/club.php'
+         regexp: 'palette'
+         line: "$config['palette'] = 'base';"
+
+    - name: check that GVV can be reached
+      uri:
+        url: "http://{{inventory_hostname}}/gvv"
+        follow_redirects: yes
+

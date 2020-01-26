@@ -16,7 +16,10 @@
 #    - mysql
 #    - ftp
 #    - php
-    - gvv
+#    - gvv
+#    - jdk
+#    - jenkins
+    - phptools
 
   pre_tasks:
 
@@ -26,3 +29,7 @@
 
     - name: test root access
       command: 'grep root /etc/shadow'
+
+    - name: include host variables
+      include_vars:
+         file: "host_vars/{{inventory_hostname_short}}.yml"

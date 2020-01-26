@@ -1,0 +1,5 @@
+---
+- name: Install JDK
+  apt: name={{item}} state=present force=yes
+  with_items:
+  - default-jdk-headless
