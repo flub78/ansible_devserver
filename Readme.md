@@ -21,3 +21,6 @@ target_domain:ansible_port ansible_become_password=password
 ansible-playbook -i hosts --ask-vault-pass dev_server.yml
 or
 ansible-playbook -i hosts dev_server.yml
+
+## To edit encrypted files
+ansible-vault edit host_vars/flub78.yml

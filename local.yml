@@ -1,0 +1,38 @@
+---
+# ansible-playbook local.yml
+#
+- name: Simple local playbook
+
+  gather_facts: true
+  hosts: localhost
+
+  become_method: sudo
+
+  pre_tasks:
+
+    - name: test connection
+      ping:
+
+    # only succesful when root
+    - name: test root access
+      become: yes
+      become_user: root
+      command: 'grep root /etc/shadow'
+
+    - name: another command as root
+      become: yes
+      become_user: root
+      command: 'id'
+      register: id
+    - debug: var=id.stdout_lines
+
+    - name: ls, back to normal user
+      command: 'ls -l'
+
+    - name: HOME
+      debug: msg="{{ lookup('env','HOME') }} is an environment variable"
+
+    - name: user id
+      command: 'id'
+      register: id
+    - debug: var=id.stdout_lines

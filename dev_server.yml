@@ -20,6 +20,7 @@
 #    - jdk
 #    - jenkins
     - phptools
+#     - watir
 
   pre_tasks:
 

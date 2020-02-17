@@ -16,13 +16,20 @@
     - name: set correct owner
       file:
          path: '{{installation_path}}'
-         mode: 0770
+         mode: 0644
          recurse: yes
          state: directory
          owner: www-data
          group: www-data
 
-
+    - name: set correct file permisiion
+      command: |
+        chmod -c -R ug=rw,o=r,a-x+X "{{item}}"
+      register: chmod_status
+      changed_when: chmod_status.stdout != ""
+      with_items:
+        - '{{installation_path}}'
+          
 # Create a database
     - name: create a database
       mysql_db:

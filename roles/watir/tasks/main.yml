@@ -1,0 +1,35 @@
+#    Install WATIR
+
+    - name: check that ruby and other packages are installed
+      apt: name={{item}} state=present
+      with_items:
+        - ruby
+        - ruby-dev
+        - rake
+        - xvfb
+        - firefox-geckodriver
+        - libssl-dev
+        - graphviz
+
+    - name: install minitest and other gems
+      gem: name={{item}} state=present
+      with_items:
+        - minitest
+        - dbi
+        - mysql2
+        - minitest-ci
+        - watir
+        - headless
+        - webdrivers
+
+          #     Installing chrome
+          #     sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
+          #     sudo echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+          #     sudo apt-get -y update
+          #     sudo apt-get -y install google-chrome-stable
+
+          # 607  wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+          # 608  unzip chromedriver_linux64.zip
+          # 609  mv chromedriver /usr/bin/chromedriver
+          # 610  chown root:root /usr/bin/chromedriver
+          # 611  chmod +x /usr/bin/chromedriver
